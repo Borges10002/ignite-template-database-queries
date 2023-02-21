@@ -1,6 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import { User } from "../../../users/entities/User";
+import { ICreateGameDTO } from "../../dtos";
 import { Game } from "../../entities/Game";
 
 import { IGamesRepository } from "../IGamesRepository";
@@ -34,5 +35,10 @@ export class GamesRepository implements IGamesRepository {
       .of(id)
       .loadMany();
     return user;
+  }
+
+  async createGame({ title }: ICreateGameDTO): Promise<void> {
+    const game = this.repository.create({ title });
+    await this.repository.save(game);
   }
 }

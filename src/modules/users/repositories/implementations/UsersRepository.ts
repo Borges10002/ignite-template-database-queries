@@ -1,6 +1,10 @@
 import { getRepository, Repository } from "typeorm";
 
-import { IFindUserWithGamesDTO, IFindUserByFullNameDTO } from "../../dtos";
+import {
+  IFindUserWithGamesDTO,
+  IFindUserByFullNameDTO,
+  ICreateUserDTO,
+} from "../../dtos";
 import { User } from "../../entities/User";
 import { IUsersRepository } from "../IUsersRepository";
 
@@ -36,5 +40,19 @@ export class UsersRepository implements IUsersRepository {
       [first_name, last_name]
     );
     return users;
+  }
+
+  async createUser({
+    first_name,
+    last_name,
+    email,
+  }: ICreateUserDTO): Promise<void> {
+    const user = this.repository.create({
+      first_name,
+      last_name,
+      email,
+    });
+
+    await this.repository.save(user);
   }
 }
